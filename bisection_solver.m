@@ -3,7 +3,7 @@ function x = bisection_solver(fun,x_left,x_right)
     mid = (x_right + x_left)/2;
     
     %Check if bisection is within tolerance of 0
-    if (fun(mid) < 0.001) && (fun(mid) > -0.001)
+    if (fun(mid) < 0.00001) && (fun(mid) > -0.00001)
         x = mid;
 
     %If left and mid are new points (opposite signs)
