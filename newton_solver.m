@@ -10,7 +10,7 @@ function x = newton_solver(fun,x0)
     
     while abs(func(x_init)) > (1e-14)
         % Add break condition for 0 denominator
-        if dfdx(x_init) = 0
+        if dfdx(x_init) == 0
             break
         end
         % Run update step for Newton's Method
@@ -26,4 +26,7 @@ function x = newton_solver(fun,x0)
         % Update x input for Newton's Method
         x_init = x1;
     end
+    
+    % Return current x value if while loop ends, makes sure an x value is assigned and returned
+    x = x1;
 end
