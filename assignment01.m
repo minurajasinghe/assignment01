@@ -28,8 +28,10 @@ x_2 = 30;
 fun = input_fun();
 
 root_bisect = bisection_solver(fun{1},x_left,x_right);
-root_newton = newton_solver(fun,x0);
+[root_newton,x_n] = newton_solver(fun,x0);
 root_secant = secant_solver(fun{1},x_1,x_2);
 
 
+
+%% Error
 
