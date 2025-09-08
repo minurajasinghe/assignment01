@@ -1,5 +1,6 @@
 function x = bisection_solver(fun,x_left,x_right)
     
+    global guess_list;
     guess_list = [];
 
     %Create bisection
@@ -8,6 +9,7 @@ function x = bisection_solver(fun,x_left,x_right)
     %Check if bisection is within tolerance of 0
     if (fun(mid) < 0.00001) && (fun(mid) > -0.00001)
         x = mid;
+        
 
     %If left and mid are new points (opposite signs)
     elseif (((fun(x_left))> 0)&&(fun(mid) < 0))||(((fun(x_left) < 0)&&(fun(mid) > 0)))
