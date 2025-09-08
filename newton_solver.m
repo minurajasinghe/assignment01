@@ -1,17 +1,22 @@
-function [x,x_n] = newton_solver(fun,x0)
-    % Pull out the function and its derivative from the input function array
+function x = newton_solver(fun,x0)
+
+    % Initialize global variable
+    global newton_guess_list;
     
+    % Initialize to be empty array
+    newton_guess_list = [];
+
+    % Pull out the function and its derivative from the input function array
     func = fun{1};
     dfdx = fun{2};
     
     % Set intial starting point for Newton's Method to initial value input parameter
     
     x_init = x0;
-    x_n = [];
     
     while abs(func(x_init)) > (1e-14)
         % Add previous guess to guess list
-        x_n(end+1) = x_init;
+        newton_guess_list(:,end+1) = x_init;
 
         % Add break condition for 0 denominator
         if dfdx(x_init) == 0

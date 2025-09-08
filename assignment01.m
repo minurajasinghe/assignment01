@@ -34,9 +34,33 @@ x_2 = 30;
 fun = input_fun();
 
 root_bisect = bisection_solver(fun{1},x_left,x_right);
-[root_newton,x_n] = newton_solver(fun,x0);
+root_newton = newton_solver(fun,x0);
 root_secant = secant_solver(fun{1},x_1,x_2);
 
+%% Newton's Method Multiple Trials
+num_iter = 1000;
+
+x0_list = linspace(-5,5,num_iter);
+
+newt_x_current_list = [];
+newt_x_next_list =[];
+newt_id_list = [];
+
+for n = 1:num_iter
+    x0 = x0_list(n);
+    newton_guess_list = [];
+
+    newton_root = newton_solver(fun,x0);
+    
+    newt_x_current_list = [newt_x_current_list, newton_guess_list(1:end-1)];
+    newt_x_next_list = [newt_x_next_list, newton_guess_list(2:end)];
+    newt_id_list = [newt_id_list,1:length(newton_guess_list)-1];
+end
+
+newt_e_list0 = abs(newt_x_current_list - newton_root);
+newt_e_list1 = abs(newt_x_next_list - newton_root);
+
+loglog(newt_e_list0,newt_e_list1,'ro','markerfacecolor','r','markersize',1);
 
 
 %% Error
