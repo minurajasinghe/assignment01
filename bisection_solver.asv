@@ -1,7 +1,7 @@
 function x = bisection_solver(fun,x_left,x_right)
     
-    global guess_list;
-    guess_list = [];
+    global bisect_guess_list;
+    bisect_guess_list = [];
 
     %Create bisection
     mid = (x_right + x_left)/2;
@@ -9,12 +9,11 @@ function x = bisection_solver(fun,x_left,x_right)
     %Check if bisection is within tolerance of 0
     if (fun(mid) < 0.00001) && (fun(mid) > -0.00001)
         x = mid;
-        
 
     %If left and mid are new points (opposite signs)
     elseif (((fun(x_left))> 0)&&(fun(mid) < 0))||(((fun(x_left) < 0)&&(fun(mid) > 0)))
         %Call bisection_solver recursively
-        guess_list.append(mid);
+        bisectguess_list.append(mid);
         x = bisection_solver(fun, x_left, mid);
     % If mid and right are new points (opposite signs)
 

@@ -42,4 +42,4 @@ root_secant = secant_solver(fun{1},x_1,x_2);
 %% Error
 
 
-bisect_error_list = guess_list - root_bisect
+bisect_error_list = bisect_guess_list - root_bisect;
