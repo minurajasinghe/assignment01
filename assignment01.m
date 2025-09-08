@@ -6,7 +6,9 @@ test_derivative01 = @(x) 3*(x.^2)/100 - 2*x/8 + 2 +(6/2)*cos(x/2+6) - exp(x/6)/6
 global bisect_guess_list;
 global newton_guess_list;
 global secant_guess_list;
-
+bisect_guess_list = [];
+newton_guess_list = [];
+secant_guess_list = [];
 
 %% Plot Function
 
