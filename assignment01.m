@@ -13,16 +13,16 @@ secant_guess_list = [];
 %% Plot Function
 
 
-% x_list = linspace(-15,40,100);
-% y_list = test_func01(x_list);
+x_list = linspace(-15,40,100);
+y_list = test_func01(x_list);
 
-% clf;
-% figure;
-% plot(x_list,y_list,'r')
-% hold on
-% plot([-15 40],[0,0], '--','Color','k')
-% ylim([-45,80])
-% xlim([-15, 40])
+clf;
+plot(x_list,y_list,'r')
+hold on
+plot([-15 40],[0,0], '--','Color','k')
+ylim([-45,80])
+xlim([-15, 40])
+hold off;
 
 %% Root solvers
 x0 = 1;
@@ -37,7 +37,7 @@ root_bisect = bisection_solver(fun{1},x_left,x_right);
 root_newton = newton_solver(fun,x0);
 root_secant = secant_solver(fun{1},x_1,x_2);
 
-%% Newton's Method Multiple Trials
+%% Newton's Method Error
 num_iter = 1000;
 
 x0_list = linspace(-5,5,num_iter);
@@ -60,8 +60,39 @@ end
 newt_e_list0 = abs(newt_x_current_list - newton_root);
 newt_e_list1 = abs(newt_x_next_list - newton_root);
 
-loglog(newt_e_list0,newt_e_list1,'ro','markerfacecolor','r','markersize',1);
+figure;
+loglog(newt_e_list0,newt_e_list1,'ro','markerfacecolor','r','markersize',3); hold on;
 
+newt_x_regression = []; % e_n
+newt_y_regression = []; % e_{n+1}
+%iterate through the collected data
+for n=1:length(newt_id_list)
+    %if the error is not too big or too small
+    %and it was enough iterations into the trial...
+    if newt_e_list0(n)>1e-15 && newt_e_list0(n)<1e-2 && ...
+    newt_e_list1(n)>1e-14 && newt_e_list1(n)<1e-2 && ...
+    newt_id_list(n)>2
+    %then add it to the set of points for regression
+    newt_x_regression(end+1) = newt_e_list0(n);
+    newt_y_regression(end+1) = newt_e_list1(n);
+    end
+end
+
+loglog(newt_x_regression,newt_y_regression,'bo','MarkerFaceColor','b','MarkerSize',2);
+
+% Get error regression fit coefficients
+[newt_p,newt_k] = error_fit_coeffs(newt_x_regression,newt_y_regression);
+
+%generate x data on a logarithmic range
+newt_fit_line_x = 10.^[-16:.01:1];
+%compute the corresponding y values
+newt_fit_line_y = newt_k*newt_fit_line_x.^newt_p;
+%plot on a loglog plot.
+loglog(newt_fit_line_x,newt_fit_line_y,'k-','linewidth',1)
+
+% Finite difference approximation to evaluate k
+[dfdx,d2fdx2] = approximate_derivative(fun{1},newton_root);
+k = .5*(d2fdx2/dfdx);
 
 %% Error
 
