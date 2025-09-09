@@ -20,6 +20,8 @@ function convergence_analysis(solver_flag, fun, x_guess0, guess_list1, guess_lis
         
         % Bisection Method
         if (solver_flag == 1)
+            x0 = guess_list1(n) + 2*rand();
+            x1 = guess_list2(n); + 2*rand();
             root = bisection_solver(fun{1},x0, x1);
         % Newtons Method
         elseif (solver_flag == 2)

@@ -6,7 +6,7 @@ x_guess0 = 0.75;
 fun = input_fun();
 num_iter = 1000;
 guesslist1 = linspace(-6,-2,num_iter);
-guesslist2 = linspace(2,6,num_iter);
+guesslist2 = linspace(6,2,num_iter);
 
 %Filter Parameters
 filter_max = 1e-1;
