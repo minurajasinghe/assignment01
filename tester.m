@@ -1,0 +1,1 @@
+[fx, dfx] = input_fun(0.7)
