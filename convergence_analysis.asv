@@ -1,0 +1,28 @@
+function convergence_analysis(solver_flag, fun, x_guess0, guess_list1, guess_list2, filter_list)
+    
+    % Define Abs Zero
+    abs_zero = fzero(fun);
+
+    % Define global Variables
+    global guess_list;
+    guess_list = [];
+    % Bisection Method
+    if (solver_flag == 1)
+    
+    % Newtons Method
+    elseif (solver_flag == 2)
+
+    % Secant Method
+    elseif (solver_flag == 3)
+        global secant_guess_list;
+        secant_guess_list = [];
+
+    % Fzero
+    elseif (solver_flag == 4)
+        global fzero_guess_list;
+        fzero_guess_list = [];
+
+    end
+
+    
+end

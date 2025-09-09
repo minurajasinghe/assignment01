@@ -1,10 +1,10 @@
 function x = newton_solver(fun,x0)
 
     % Initialize global variable
-    global newton_guess_list;
+    global guess_list;
     
     % Initialize to be empty array
-    newton_guess_list = [];
+    guess_list = [];
 
     % Pull out the function and its derivative from the input function array
     func = fun{1};
@@ -16,7 +16,7 @@ function x = newton_solver(fun,x0)
     
     while abs(func(x_init)) > (1e-14)
         % Add previous guess to guess list
-        newton_guess_list(:,end+1) = x_init;
+        guess_list(:,end+1) = x_init;
 
         % Add break condition for 0 denominator
         if dfdx(x_init) == 0
