@@ -14,8 +14,8 @@ function convergence_analysis(solver_flag, fun, x_guess0, guess_list1, guess_lis
     id_list = [];
 
     for n = 1:num_iter
-        x0 = guess_list1(n) + rand();
-        x1 = guess_list2(n) + rand();
+        x0 = guess_list1(n);%+ rand();
+        x1 = guess_list2(n);%+ rand();
         guess_list = [];
         
         % Bisection Method
@@ -44,7 +44,25 @@ function convergence_analysis(solver_flag, fun, x_guess0, guess_list1, guess_lis
     e_list1 = abs(x_next_list - rootywooty);
     
     figure;
-    loglog(e_list0, e_list1,'ro','markerfacecolor','r','markersize',3); hold on;
+    loglog(e_list0, e_list1,'ro','markerfacecolor','r','markersize',3); 
+    ylim([1e-20, 1e3]); 
+    xlabel("Error (n)")
+    ylabel("Error (n+1)")
+    if (solver_flag == 1)
+        title("Bisection Method")
+    % Newtons Method
+    elseif (solver_flag == 2)
+        title("Newton Method")
+    % Secant Method
+    elseif (solver_flag == 3)
+        title("Secant Method")
+    % Fzero
+    elseif (solver_flag == 4)
+        title("fzero")
+    else
+        disp("solver_flag must be 1 - 4")
+    end
+    hold on;
     
     x_regression = []; % e_n
     y_regression = []; % e_{n+1}
