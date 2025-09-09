@@ -14,8 +14,8 @@ function convergence_analysis(solver_flag, fun, x_guess0, guess_list1, guess_lis
     id_list = [];
 
     for n = 1:num_iter
-        x0 = guess_list1(n);%+ rand();
-        x1 = guess_list2(n);%+ rand();
+        x0 = guess_list1(n); %+ rand();
+        x1 = guess_list2(n); %+ rand();
         guess_list = [];
         
         % Bisection Method
