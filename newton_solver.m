@@ -14,7 +14,7 @@ function x = newton_solver(fun,x0)
     
     x_init = x0;
     
-    while abs(func(x_init)) > (1e-14)
+    while abs(func(x_init)) > (1e-16)
         % Add previous guess to guess list
         guess_list(:,end+1) = x_init;
 
@@ -27,7 +27,7 @@ function x = newton_solver(fun,x0)
         
         % Check if difference is sufficiently small to consider a root found
         
-        if abs(x1 - x_init) < (1e-14)
+        if abs(x1 - x_init) < (1e-16)
             x = x1;
             return
         end
