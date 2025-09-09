@@ -92,7 +92,7 @@ loglog(newt_fit_line_x,newt_fit_line_y,'k-','linewidth',1)
 
 % Finite difference approximation to evaluate k
 [dfdx,d2fdx2] = approximate_derivative(fun{1},newton_root);
-k = .5*(d2fdx2/dfdx);
+k = abs(.5*(d2fdx2/dfdx));
 
 %% Error
 
