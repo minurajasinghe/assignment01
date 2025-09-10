@@ -23,7 +23,7 @@ function convergence_analysis_v2(solver_flag, fun, x_guess0, guess_list1, guess_
             root = bisection_solver(fun,x0, x1);
         % Newtons Method
         elseif (solver_flag == 2)
-            root = newton_solver(fun,x0);
+            root = newton_solver(fun,x0, filter_list);
         % Secant Method
         elseif (solver_flag == 3)
             root = secant_solver(fun,x0, x1);

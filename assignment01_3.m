@@ -1,5 +1,5 @@
 %EDIT THIS:
-solver_flag = 4;
+solver_flag = 2;
 x_guess0 = 0.75;
 
 %DO NOT EDIT THIS
