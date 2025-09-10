@@ -4,7 +4,7 @@ function x = bisection_solver(fun,x_left,x_right)
 
     %Create bisection
     mid = (x_right + x_left)/2;
-    
+   
     %Check if bisection is within tolerance of 0
     if (fun(mid) < 1e-14) && (fun(mid) > -1e-14)
         x = mid;
