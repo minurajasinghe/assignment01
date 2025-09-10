@@ -18,7 +18,7 @@ function x = newton_solver(fun,x0,filter_list)
     
     while abs(f) > ytol
         % Add previous guess to guess list
-        guess_list(:,end+1) = x_init;
+        guess_list(end+1,1) = x_init;
 
         % Add break condition for 0 denominator
         if dfdx == 0
@@ -36,6 +36,9 @@ function x = newton_solver(fun,x0,filter_list)
 
         % Update x input for Newton's Method
         x_init = x1;
+
+        % Re-evaluate function and derivative
+        [f, dfdx] = fun(x_init);
     end
     
     % Return current x value if while loop ends, makes sure an x value is assigned and returned
