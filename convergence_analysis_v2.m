@@ -2,7 +2,7 @@ function convergence_analysis_v2(solver_flag, fun, x_guess0, guess_list1, guess_
     num_iter = 1000; %Number of times to run root finding for error plot
 
     % Define Abs Zero
-    rootywooty = fzero(fun{1}, x_guess0);
+    rootywooty = fzero(fun, x_guess0);
 
     % Define global Variables
     global guess_list;
@@ -20,16 +20,16 @@ function convergence_analysis_v2(solver_flag, fun, x_guess0, guess_list1, guess_
         
         % Bisection Method
         if (solver_flag == 1)
-            root = bisection_solver(fun{1},x0, x1);
+            root = bisection_solver(fun,x0, x1);
         % Newtons Method
         elseif (solver_flag == 2)
             root = newton_solver(fun,x0);
         % Secant Method
         elseif (solver_flag == 3)
-            root = secant_solver(fun{1},x0, x1);
+            root = secant_solver(fun,x0, x1);
         % Fzero
         elseif (solver_flag == 4)
-            root = fzero(fun{1},x0);
+            root = fzero(fun,x0);
         else
             disp("solver_flag must be 1 - 4")
         end
@@ -109,7 +109,7 @@ function convergence_analysis_v2(solver_flag, fun, x_guess0, guess_list1, guess_
     %     disp("solver_flag must be 1 - 4")
     % end
     % Finite difference approximation to evaluate k
-    [dfdx,d2fdx2] = approximate_derivative(fun{1}, rootywooty);
+    [dfdx,d2fdx2] = approximate_derivative(fun, rootywooty);
     k = abs(.5*(d2fdx2/dfdx));
 
 
