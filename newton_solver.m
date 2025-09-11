@@ -17,9 +17,6 @@ function x = newton_solver(fun,x0,filter_list)
     [f, dfdx] = fun(x_init);
     
     while abs(f) > ytol
-        % Add previous guess to guess list
-        guess_list(end+1,1) = x_init;
-
         % Add break condition for 0 denominator
         if dfdx == 0
             break
