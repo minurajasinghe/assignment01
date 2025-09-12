@@ -2,7 +2,7 @@ function convergence_analysis(solver_flag, fun, x_guess0, guess_list1, guess_lis
     num_iter = 1000; %Number of times to run root finding for error plot
 
     % Define Abs Zero
-    rootywooty = fzero(fun{1}, x_guess0);
+    rootywooty = fzero(@test_function01, x_guess0);
 
     % Define global Variables
     global guess_list;
@@ -23,7 +23,7 @@ function convergence_analysis(solver_flag, fun, x_guess0, guess_list1, guess_lis
             root = bisection_solver(fun{1},x0, x1);
         % Newtons Method
         elseif (solver_flag == 2)
-            root = newton_solver(fun,x0);
+            root = newton_solver(fun,x0,filter_list);
         % Secant Method
         elseif (solver_flag == 3)
             root = secant_solver(fun{1},x0, x1);

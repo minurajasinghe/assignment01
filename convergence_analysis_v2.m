@@ -1,21 +1,26 @@
-function convergence_analysis_v2(solver_flag, fun, x_guess0, guess_list1, guess_list2, filter_list)
+function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2, filter_list)
     num_iter = 1000; %Number of times to run root finding for error plot
 
     % Define Abs Zero
-    rootywooty = fzero(fun, x_guess0);
+    rootywooty = fzero(fun, x0);
 
     % Define global Variables
     global guess_list;
     guess_list = [];
 
+    global x_regression;
+    x_regression = [];
+    global y_regression;
+    y_regression = [];
 
     x_current_list = [];
     x_next_list = [];
     id_list = [];
 
     for n = 1:num_iter
-        x0 = guess_list1(n);%+ rand();
-        x1 = guess_list2(n);%+ rand();
+        % x0 = guess_list1(n);%+ rand();
+        % x1 = guess_list2(n);%+ rand();
+        
         guess_list = [];
         
         % Bisection Method
@@ -78,6 +83,8 @@ function convergence_analysis_v2(solver_flag, fun, x_guess0, guess_list1, guess_
         y_regression(end+1) = e_list1(n);
         end
     end
+
+
 
     loglog(x_regression, y_regression,'bo','MarkerFaceColor','b','MarkerSize',2);
     

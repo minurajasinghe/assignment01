@@ -1,44 +1,10 @@
-% Definition of the test function and its derivative
-test_func01 = @(x) (x.^3)/100 - (x.^2)/8 + 2*x + 6*sin(x/2+6) -.7 - exp(x/6);
-test_derivative01 = @(x) 3*(x.^2)/100 - 2*x/8 + 2 +(6/2)*cos(x/2+6) - exp(x/6)/6;
-
-%Create Global Variables
-global bisect_guess_list;
-global guess_list;
-global secant_guess_list;
-bisect_guess_list = [];
-guess_list = [];
-secant_guess_list = [];
-
-%% Plot Function
-
-
-x_list = linspace(-15,40,100);
-y_list = test_func01(x_list);
-
-clf;
-plot(x_list,y_list,'r')
-hold on
-plot([-15 40],[0,0], '--','Color','k')
-ylim([-45,80])
-xlim([-15, 40])
-hold off;
-
-%% Root solvers
-x0 = 1;
-x_left = -15;
-x_right = 30;
-x_1 = -15;
-x_2 = 30;
-
-fun = input_fun();
-
-root_bisect = bisection_solver(fun{1},x_left,x_right);
-root_newton = newton_solver(fun,x0);
-root_secant = secant_solver(fun{1},x_1,x_2);
+convergence_analysis_v2(2,@test_function01,1,[1,1],[1,1],[1e-14,1e-14])
 
 %% Newton's Method Error
-num_iter = 1000;
+global guess_list
+guess_list = [];
+
+num_iter = 100;
 
 x0_list = linspace(-5,5,num_iter);
 
@@ -50,8 +16,7 @@ for n = 1:num_iter
     x0 = x0_list(n);
     guess_list = [];
 
-    newton_root = newton_solver(@test_func01,x0,[1e-14,1e-14]);
-    
+    newton_root = newton_solver(@test_function01,x0,[1e-14,1e-14]);
     newt_x_current_list = [newt_x_current_list, guess_list(1:end-1)];
     newt_x_next_list = [newt_x_next_list, guess_list(2:end)];
     newt_id_list = [newt_id_list,1:length(guess_list)-1];
@@ -91,10 +56,5 @@ newt_fit_line_y = newt_k*newt_fit_line_x.^newt_p;
 loglog(newt_fit_line_x,newt_fit_line_y,'k-','linewidth',1)
 
 % Finite difference approximation to evaluate k
-[dfdx,d2fdx2] = approximate_derivative(fun{1},newton_root);
+[dfdx,d2fdx2] = approximate_derivative(@test_function01,newton_root);
 k = abs(.5*(d2fdx2/dfdx));
-
-%% Error
-
-
-bisect_error_list = bisect_guess_list - root_bisect;
