@@ -1,4 +1,9 @@
+filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
 convergence_analysis_v2(2,@test_function01,1,[1,1],[1,1],[1e-14,1e-14])
+
+%%
+% filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
+% newton_solver(@test_function01,1)
 
 %% Newton's Method Error
 global guess_list
@@ -16,7 +21,7 @@ for n = 1:num_iter
     x0 = x0_list(n);
     guess_list = [];
 
-    newton_root = newton_solver(@test_function01,x0,[1e-14,1e-14]);
+    newton_root = newton_solver(@test_function01,x0);
     newt_x_current_list = [newt_x_current_list, guess_list(1:end-1)];
     newt_x_next_list = [newt_x_next_list, guess_list(2:end)];
     newt_id_list = [newt_id_list,1:length(guess_list)-1];

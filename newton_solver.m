@@ -1,4 +1,4 @@
-function x = newton_solver(fun,x0,filter_list)
+function x = newton_solver(fun,x0)
 
     % Initialize global variable
     global guess_list;
@@ -7,8 +7,8 @@ function x = newton_solver(fun,x0,filter_list)
     guess_list = [];
     
     % Grab filter list values
-    ytol = filter_list(1);
-    dxtol = filter_list(2);
+    ytol = 1e-14;
+    dxtol = 1e-6;
 
     % Set intial starting point for Newton's Method to initial value input parameter
     x_init = x0;

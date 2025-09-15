@@ -28,7 +28,7 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
             root = bisection_solver(fun,x0, x1);
         % Newtons Method
         elseif (solver_flag == 2)
-            root = newton_solver(fun,x0, filter_list);
+            root = newton_solver(fun,x0);
         % Secant Method
         elseif (solver_flag == 3)
             root = secant_solver(fun,x0, x1);
@@ -45,11 +45,11 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
     end
     
 
-    e_list0 = abs(x_current_list - rootywooty);
-    e_list1 = abs(x_next_list - rootywooty);
+    error_list0 = abs(x_current_list - rootywooty);
+    error_list1 = abs(x_next_list - rootywooty);
     
     figure;
-    loglog(e_list0, e_list1,'ro','markerfacecolor','r','markersize',3); 
+    loglog(error_list0, error_list1,'ro','markerfacecolor','r','markersize',3); 
     ylim([1e-20, 1e3]); 
     xlabel("Error (n)")
     ylabel("Error (n+1)")
@@ -71,16 +71,17 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
     
     x_regression = []; % e_n
     y_regression = []; % e_{n+1}
+
     %iterate through the collected data
     for n=1:length(id_list)
         %if the error is not too big or too small
         %and it was enough iterations into the trial...
-        if e_list0(n)>filter_list(1) && e_list0(n)<filter_list(2) && ...
-        e_list1(n)>filter_list(1) && e_list1(n)<filter_list(2) && ...
-        id_list(n)>2
-        %then add it to the set of points for regression
-        x_regression(end+1) = e_list0(n);
-        y_regression(end+1) = e_list1(n);
+        if error_list0(n)>filter_list(1) && error_list0(n)<filter_list(2) && ...
+            error_list1(n)>filter_list(3) && error_list1(n)<filter_list(4) && ...
+            index_list(n)>filter_list(5)
+            %then add it to the set of points for regression
+            x_regression(end+1) = error_list0(n);
+            y_regression(end+1) = error_list1(n);
         end
     end
 
