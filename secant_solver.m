@@ -1,7 +1,7 @@
 function x = secant_solver(fun,x0, x1)
 %Takes function, and two initial guesses
 
-    global guess_list;
+    %global guess_list;
     %creates global variable to be able to call variable withing other
     %functions
 
@@ -13,7 +13,7 @@ function x = secant_solver(fun,x0, x1)
         %States that if a guess creates an output ("y" value) within the bounds of 10^14 to -10^14
         %then it is close enough to 0 to be a root
     else 
-        guess_list(end+1) = x1;
+        %guess_list(end+1) = x1;
         x = secant_solver(fun,x1,x_n);
         % If the first "if" statement is not applicable, then the newly
         % guess values is apended to the vector of guesses and the function

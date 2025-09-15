@@ -1,4 +1,5 @@
 function convergence_analysis_v2(solver_flag, fun, x_guess0, guess_list1, guess_list2, filter_list)
+    
     num_iter = 1000; %Number of times to run root finding for error plot
 
     % Define Abs Zero
@@ -74,6 +75,7 @@ function convergence_analysis_v2(solver_flag, fun, x_guess0, guess_list1, guess_
         e_list1(n)>filter_list(1) && e_list1(n)<filter_list(2) && ...
         id_list(n)>2
         %then add it to the set of points for regression
+        
         x_regression(end+1) = e_list0(n);
         y_regression(end+1) = e_list1(n);
         end
