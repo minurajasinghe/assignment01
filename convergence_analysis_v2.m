@@ -13,15 +13,20 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
     global y_regression;
     y_regression = [];
 
+    global id_list;
+    id_list = [];
+    global x_current_list;
+
     x_current_list = [];
     x_next_list = [];
     id_list = [];
-
+    x0_list = linspace(-5,5,num_iter);
     for n = 1:num_iter
         % x0 = guess_list1(n);%+ rand();
         % x1 = guess_list2(n);%+ rand();
+        x0 = x0_list(n);
         
-        guess_list = [];
+        % guess_list = [];
         
         % Bisection Method
         if (solver_flag == 1)
@@ -44,6 +49,8 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
         id_list = [id_list,1:length(guess_list)-1];
     end
     
+    global error_list0;
+    global error_list1;
 
     error_list0 = abs(x_current_list - rootywooty);
     error_list1 = abs(x_next_list - rootywooty);
@@ -69,22 +76,27 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
     end
     hold on;
     
+
     x_regression = []; % e_n
     y_regression = []; % e_{n+1}
 
     %iterate through the collected data
-    for n=1:length(id_list)
-        %if the error is not too big or too small
-        %and it was enough iterations into the trial...
-        if error_list0(n)>filter_list(1) && error_list0(n)<filter_list(2) && ...
-            error_list1(n)>filter_list(3) && error_list1(n)<filter_list(4) && ...
-            index_list(n)>filter_list(5)
-            %then add it to the set of points for regression
-            x_regression(end+1) = error_list0(n);
-            y_regression(end+1) = error_list1(n);
+    for n = 1:length(id_list)
+        % if the error is not too big or too small
+        % and it was enough iterations into the trial...
+        if error_list0(n) > filter_list(1) && error_list0(n) < filter_list(2) && ...
+           error_list1(n) > filter_list(3) && error_list1(n) < filter_list(4) && ...
+           index_list(n)  > filter_list(5)
+           % then add it to the set of points for regression
+           x_regression(end+1) = error_list0(n);
+           y_regression(end+1) = error_list1(n);
         end
     end
 
+
+    global Y;
+    global X1;
+    global X2;
 
 
     loglog(x_regression, y_regression,'bo','MarkerFaceColor','b','MarkerSize',2);

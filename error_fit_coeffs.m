@@ -1,4 +1,8 @@
 function [p,k] = error_fit_coeffs(x_regression,y_regression)
+    global Y;
+    global X1;
+    global X2;
+
     Y = log(y_regression)';
     X1 = log(x_regression)';
     X2 = ones(length(X1),1);

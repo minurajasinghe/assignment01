@@ -4,7 +4,7 @@ function x = newton_solver(fun,x0)
     global guess_list;
     
     % Initialize to be empty array
-    guess_list = [];
+    % guess_list = [];
     
     % Grab filter list values
     ytol = 1e-14;
