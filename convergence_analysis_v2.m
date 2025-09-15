@@ -38,7 +38,8 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
             root = newton_solver(fun,guess_list1(n));
         % Secant Method
         elseif (solver_flag == 3)
-            root = secant_solver(fun,guess_list1(n), guess_list2(n));
+            [root, iterates] = secant_solver(fun,guess_list1(n), guess_list2(n), 1e-14, 100);
+            
         % Fzero
         elseif (solver_flag == 4)
             root = fzero(fun,guess_list1(n));
@@ -46,9 +47,15 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
             disp("solver_flag must be 1 - 4")
         end
         
-        x_current_list = [x_current_list, guess_list(1:end-1)];
-        x_next_list = [x_next_list, guess_list(2:end)];
-        id_list = [id_list,1:length(guess_list)-1];
+        if solver_flag == 3
+            x_current_list = [x_current_list, iterates(1:end-1)];
+            x_next_list    = [x_next_list, iterates(2:end)];
+            id_list        = [id_list, 1:length(iterates)-1];
+        else
+            x_current_list = [x_current_list, guess_list(1:end-1)];
+            x_next_list = [x_next_list, guess_list(2:end)];
+            id_list = [id_list,1:length(guess_list)-1];
+        end
     end
     
     global error_list0;
