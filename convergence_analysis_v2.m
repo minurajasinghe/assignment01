@@ -1,5 +1,5 @@
 function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2, filter_list)
-    num_iter = 1000; %Number of times to run root finding for error plot
+    num_iter = length(guess_list1); %Number of times to run root finding for error plot
 
     % Define Abs Zero
     rootywooty = fzero(fun, x0);
@@ -20,26 +20,28 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
     x_current_list = [];
     x_next_list = [];
     id_list = [];
-    x0_list = linspace(-5,5,num_iter);
+
+    % x0_list = linspace(-5,5,num_iter);
+
     for n = 1:num_iter
         % x0 = guess_list1(n);%+ rand();
         % x1 = guess_list2(n);%+ rand();
-        x0 = x0_list(n);
+        % x0 = x0_list(n);
         
-        % guess_list = [];
+        guess_list = [];
         
         % Bisection Method
         if (solver_flag == 1)
-            root = bisection_solver(fun,x0, x1);
+            root = bisection_solver(fun,guess_list1(n), guess_list2(n));
         % Newtons Method
         elseif (solver_flag == 2)
-            root = newton_solver(fun,x0);
+            root = newton_solver(fun,guess_list1(n));
         % Secant Method
         elseif (solver_flag == 3)
-            root = secant_solver(fun,x0, x1);
+            root = secant_solver(fun,guess_list1(n), guess_list2(n));
         % Fzero
         elseif (solver_flag == 4)
-            root = fzero(fun,x0);
+            root = fzero(fun,guess_list1(n));
         else
             disp("solver_flag must be 1 - 4")
         end
@@ -86,17 +88,12 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
         % and it was enough iterations into the trial...
         if error_list0(n) > filter_list(1) && error_list0(n) < filter_list(2) && ...
            error_list1(n) > filter_list(3) && error_list1(n) < filter_list(4) && ...
-           index_list(n)  > filter_list(5)
+           id_list(n)  > filter_list(5)
            % then add it to the set of points for regression
            x_regression(end+1) = error_list0(n);
            y_regression(end+1) = error_list1(n);
         end
     end
-
-
-    global Y;
-    global X1;
-    global X2;
 
 
     loglog(x_regression, y_regression,'bo','MarkerFaceColor','b','MarkerSize',2);

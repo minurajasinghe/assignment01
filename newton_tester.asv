@@ -1,5 +1,6 @@
 filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
-convergence_analysis_v2(2,@test_function01,1,[1,1],[1,1],[1e-14,1e-14])
+guess
+convergence_analysis_v2(3,@test_function01,1,-5,5,filter_list)
 
 %%
 % filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
@@ -11,6 +12,7 @@ guess_list = [];
 
 global newt_x_regression;
 global newt_y_regression;
+global newt_id_list;
 
 num_iter = 100;
 

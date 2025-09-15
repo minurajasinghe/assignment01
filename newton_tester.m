@@ -1,5 +1,8 @@
 filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
-convergence_analysis_v2(2,@test_function01,1,[1,1],[1,1],[1e-14,1e-14])
+guess_list1 = linspace(-6,-2,1000);
+guess_list2 = linspace(2.1,6.1,1000);
+
+convergence_analysis_v2(3,@test_function01,1,guess_list1,guess_list2,filter_list)
 
 %%
 % filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
