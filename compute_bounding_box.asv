@@ -21,11 +21,7 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     %plot the perimeter of the egg
     plot(V_list(1,:),V_list(2,:),'k');
     
-    [find_V_list, find_G_list] = egg_func(s_list, x0, y0, egg_params);
-
-    for i = 1 : range(len(s_list))
-        
-    end
+    [find_V_list, find_G_list] = egg_func(s_list, x0, y0, egg_params)
 
     [V_single, G_single] = egg_func(s_list(1),x0,y0,theta,egg_params);
     
