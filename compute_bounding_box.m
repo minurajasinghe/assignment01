@@ -22,7 +22,10 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     plot(V_list(1,:),V_list(2,:),'k');
     
     [find_V_list, find_G_list] = egg_func(s_list, x0, y0, egg_params);
-
+    
+    %Points where theres a vert or horz tangent
+    horz_points = []; %dx/ds
+    vert_points = []; %dy/ds
     for i = 1 : range(len(s_list))
         
     end
