@@ -1,7 +1,7 @@
 function x = newton_solver(fun,x0)
 
     % Initialize global variable
-    global guess_list;
+    % global guess_list;
     
     % Initialize to be empty array
     % guess_list = [];

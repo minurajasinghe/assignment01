@@ -2,8 +2,7 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
     num_iter = length(guess_list1); %Number of times to run root finding for error plot
 
     % Define Abs Zero
-    
-    rootywooty = secant_solver(fun, x0,x0+.001, 1e-14, 100);
+    %rootywooty = secant_solver(fun, x0,x0+.001, 1e-14, 100);
     
 
     % Define global Variables
