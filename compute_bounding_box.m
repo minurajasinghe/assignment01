@@ -12,8 +12,9 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     s_list = linspace(0, 5./6, 6);
     %specify the position and orientation of the egg
     %set up the axis
-    hold on; axis equal; axis square
-    axis([0,10,0,10])
+    hold on; axis equal; 
+    axis([0,40,0,40])
+    
     %plot the origin of the egg frame
     plot(x0,y0,'ro','markerfacecolor','r');
     %compute the perimeter of the egg
@@ -43,8 +44,6 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     vert_ses = zeros(3, 6);
     for i = 1 : length(s_list)
         %[V_guess, G_guess] = egg_func(s_list(i), x0, y0, theta, egg_params);
-        
-
         [topbottomroot, ~] = secant_solver(egg_wrapper2horz, s_list(i), s_list(i)+0.01, 0.001, 100);
         [leftrightroot, ~] = secant_solver(egg_wrapper2vert, s_list(i), s_list(i)+0.01, 0.001, 100);
         
@@ -74,12 +73,71 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
         vert_ses(2, i) = V_guess_lr(1);
         vert_ses(3, i) = V_guess_lr(2);
     end
+    
+%~~~~~~~~~~~~~~~Filter Through the points for our 2 TOP/BOTTOM points~~~~
+    tolerance = 0.001;   % closeness threshold
+    tbpoints = transpose(horz_ses);    
+    tbunique_points = [];   
+    for i = 1:size(tbpoints,1)
+        p = tbpoints(i,:);
+        is_duplicate = false;
+        if p(1) == 2
+            continue %secant failed, went to infinity
+        end
+        % Check against all saved unique points
+        for j = 1:size(tbunique_points,1)
+            if abs(p(1)-tbunique_points(j,1)) < tolerance && ...
+               abs(p(2)-tbunique_points(j,2)) < tolerance && ...
+               abs(p(3)-tbunique_points(j,3)) < tolerance
+                is_duplicate = true;
+                break;
+            end
+        end
+        % If not a duplicate, save it
+        if ~is_duplicate
+            tbunique_points = [tbunique_points; p];
+        end
+    end
+    top_bottom_points = transpose(tbunique_points);
 
-    disp(vert_ses)
-    disp(horz_ses)
+    %~~~~~~~~~~~~~~~Filter Through the points for our 2 LEFT/RIGHT points~~~~
+    lrpoints = transpose(vert_ses);    
+    lrunique_points = [];   
+    for i = 1:size(lrpoints,1)
+        p = lrpoints(i,:);
+        is_duplicate = false;
+        if p(1) == 2
+            continue %secant failed, went to infinity
+        end
+        % Check against all saved unique points
+        for j = 1:size(lrunique_points,1)
+            if abs(p(1)-lrunique_points(j,1)) < tolerance && ...
+               abs(p(2)-lrunique_points(j,2)) < tolerance && ...
+               abs(p(3)-lrunique_points(j,3)) < tolerance
+                is_duplicate = true;
+                break;
+            end
+        end
+        % If not a duplicate, save it
+        if ~is_duplicate
+            lrunique_points = [lrunique_points; p];
+        end
+    end
+    top_bottom_points = transpose(tbunique_points);
+    left_right_points = transpose(lrunique_points);
+    %%%Boundary BOX!!!
+    x_min = min(left_right_points(2, :));
+    x_max = max(left_right_points(2, :));
+
+    y_min = min(top_bottom_points(3,:));
+    y_max = max(top_bottom_points(3,:));
     
-    [V_single, G_single] = egg_func(topbottomroot,x0,y0,theta,egg_params);
+
+    %rectangle('Position',[x_min, y_min, x_max-x_min, y_max-y_min],'EdgeColor','b','LineWidth',1);
     
+    
+    x_range = [x_min, x_max];
+    y_range = [y_min, y_max];
     
     
     %compute a single point along the egg (s=.8)
@@ -89,20 +147,20 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     
     
     %as well as the tangent vector at that point
-    [V_single, G_single] = egg_func(topbottomroot,x0,y0,theta,egg_params);
+    %[V_single, G_single] = egg_func(topbottomroot,x0,y0,theta,egg_params);
     
     
     
     %plot this single point on the egg
-    plot(V_single(1),V_single(2),'ro','markerfacecolor','r');
+    %plot(V_single(1),V_single(2),'ro','markerfacecolor','r');
     
     
     
     %plot this tangent vector on the egg
-    vector_scaling = .1;
-    tan_vec_x = [V_single(1),V_single(1)+vector_scaling*G_single(1)];
-    tan_vec_y = [V_single(2),V_single(2)+vector_scaling*G_single(2)];
-    plot(tan_vec_x,tan_vec_y,'g')
+    % vector_scaling = .1;
+    % tan_vec_x = [V_single(1),V_single(1)+vector_scaling*G_single(1)];
+    % tan_vec_y = [V_single(2),V_single(2)+vector_scaling*G_single(2)];
+    % plot(tan_vec_x,tan_vec_y,'g')
 
 
 

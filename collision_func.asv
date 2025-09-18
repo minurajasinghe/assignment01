@@ -8,7 +8,7 @@
 %OUTPUTS:
 %t_ground: time that the egg would hit the ground
 %t_wall: time that the egg would hit the wall
-function [t_ground,t_wall, x_corner_list, y_corner_list] = collision_func(traj_fun, egg_params, y_ground, x_wall)
+function [t_ground,t_wall, ] = collision_func(traj_fun, egg_params, y_ground, x_wall)
     
     hit_ground = false;
     hit_wall = false;
@@ -26,11 +26,11 @@ function [t_ground,t_wall, x_corner_list, y_corner_list] = collision_func(traj_f
         x_corner = x_range(2);
         y_corner = y_range(1);
         
-        x_corner_list(:,end+1) = x_corner;
-        y_corner_list(:,end+1) = y_corner;
+        x_corner_list(:,end+1) = x_corner
+        y_corner_list(:,end+1) = y_corner
 
 
-        t = t + 0.01;
+        t = t + 0.05
         %Check if hit wall/ground
         if y_corner < y_ground  && t_ground == 0
             t_ground = t;

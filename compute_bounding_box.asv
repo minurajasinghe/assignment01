@@ -43,8 +43,6 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     vert_ses = zeros(3, 6);
     for i = 1 : length(s_list)
         %[V_guess, G_guess] = egg_func(s_list(i), x0, y0, theta, egg_params);
-        
-
         [topbottomroot, ~] = secant_solver(egg_wrapper2horz, s_list(i), s_list(i)+0.01, 0.001, 100);
         [leftrightroot, ~] = secant_solver(egg_wrapper2vert, s_list(i), s_list(i)+0.01, 0.001, 100);
         
@@ -66,17 +64,68 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
 
         horz_ses(1, i) = topbottomroot;
         [V_guess_tb, ~] = egg_func(topbottomroot, x0, y0, theta, egg_params);
-        horz_ses(2, i) = 
-
+        horz_ses(2, i) = V_guess_tb(1);
+        horz_ses(3, i) = V_guess_tb(2);
 
         vert_ses(1, i) = leftrightroot;
-        [V_guess_tb, ~] = egg_func(leftrightroot, x0, y0, theta, egg_params);
-        
-
+        [V_guess_lr, ~] = egg_func(leftrightroot, x0, y0, theta, egg_params);
+        vert_ses(2, i) = V_guess_lr(1);
+        vert_ses(3, i) = V_guess_lr(2);
     end
+    
+%~~~~~~~~~~~~~~~Filter Through the points for our 2 TOP/BOTTOM points~~~~
+    tolerance = 0.001;   % closeness threshold
+    tbpoints = transpose(horz_ses);    
+    tbunique_points = [];   
+    for i = 1:size(tbpoints,1)
+        p = tbpoints(i,:);
+        is_duplicate = false;
+        if p(1) == 2
+            continue %secant failed, went to infinity
+        end
+        % Check against all saved unique points
+        for j = 1:size(tbunique_points,1)
+            if abs(p(1)-tbunique_points(j,1)) < tolerance && ...
+               abs(p(2)-tbunique_points(j,2)) < tolerance && ...
+               abs(p(3)-tbunique_points(j,3)) < tolerance
+                is_duplicate = true;
+                break;
+            end
+        end
+        % If not a duplicate, save it
+        if ~is_duplicate
+            tbunique_points = [tbunique_points; p];
+        end
+    end
+    top_bottom_points = transpose(tbunique_points)
 
-    disp(vert_ses)
-    disp(horz_ses)
+    %~~~~~~~~~~~~~~~Filter Through the points for our 2 LEFT/RIGHT points~~~~
+    lrpoints = transpose(vert_ses);    
+    lrunique_points = [];   
+    for i = 1:size(lrpoints,1)
+        p = lrpoints(i,:);
+        is_duplicate = false;
+        if p(1) == 2
+            continue %secant failed, went to infinity
+        end
+        % Check against all saved unique points
+        for j = 1:size(lrunique_points,1)
+            if abs(p(1)-lrunique_points(j,1)) < tolerance && ...
+               abs(p(2)-lrunique_points(j,2)) < tolerance && ...
+               abs(p(3)-lrunique_points(j,3)) < tolerance
+                is_duplicate = true;
+                break;
+            end
+        end
+        % If not a duplicate, save it
+        if ~is_duplicate
+            lrunique_points = [lrunique_points; p];
+        end
+    end
+    top_bottom_points = transpose(tbunique_points)
+    left_right_points = transpose(lrunique_points)
+
+
     
     [V_single, G_single] = egg_func(topbottomroot,x0,y0,theta,egg_params);
     
