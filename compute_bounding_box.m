@@ -42,10 +42,24 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     for i = 1 : length(s_list)
         %[V_guess, G_guess] = egg_func(s_list(i), x0, y0, theta, egg_params);
         [topbottomroot, ~] = secant_solver(egg_wrapper2horz, s_list(i), s_list(i)+0.01, 0.001, 100);
-        %[leftrightroot, ~] = secant_solver(egg_wrapper2vert, s_list(i), s_list(i)+0.01, 0.001, 100);
-        disp(topbottomroot)
+        [leftrightroot, ~] = secant_solver(egg_wrapper2vert, s_list(i), s_list(i)+0.01, 0.001, 100);
+        if abs(topbottomroot) > 2
+            topbottomroot = 2; %secant didnt work, went off to infinity
+        elseif topbottomroot > 1
+            topbottomroot = topbottomroot - 1;
+        elseif topbottomroot < 0
+            topbottomroot = topbottomroot + 1;
+        end
+        if abs(leftrightroot) > 2
+            leftrightroot = 2; %secant didnt work, went off to infinity
+        elseif leftrightroot > 1
+            leftrightroot = leftrightroot - 1;
+        elseif leftrightroot < 0
+            leftrightroot = leftrightroot + 1;
+        end
+
         horz_ses(i) = topbottomroot;
-        %vert_ses(i) = leftrightroot;
+        vert_ses(i) = leftrightroot;
     end
 
     disp(vert_ses)
