@@ -138,7 +138,7 @@ function convergence_analysis_v2(solver_flag, fun, x0, guess_list1, guess_list2,
     global k;
     % Finite difference approximation to evaluate k
     [dfdx,d2fdx2] = approximate_derivative(fun, rootywooty);
-    k = abs(.5*(d2fdx2/dfdx));
+    k = abs(.5*(d2fdx2/dfdx))
 
 
 

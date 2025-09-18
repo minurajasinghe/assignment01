@@ -21,9 +21,27 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     %plot the perimeter of the egg
     plot(V_list(1,:),V_list(2,:),'k');
     
-    [find_V_list, find_G_list] = egg_func(s_list, x0, y0, egg_params)
+    [find_V_list, find_G_list] = egg_func(s_list, x0, y0, theta, egg_params);
 
-    [V_single, G_single] = egg_func(s_list(1),x0,y0,theta,egg_params);
+    %wrapper function that calls egg_wrapper1
+    egg_wrapper2vert = @(s) egg_wrapper1(s, 1, x0,y0,theta,egg_params);
+    egg_wrapper2horz = @(s) egg_wrapper1(s, 2, x0,y0,theta,egg_params);
+
+    %egg_wrapper2vert(s) = gradient (we want 0) of s along egg vert =
+    %output of 0
+    %egg_wrapper2horz(s) = gradient (we want 0) of s along egg vert =
+    %output of 0
+    
+    
+    %Points where theres a vert or horz tangent
+    horz_points = zeros(2,6); %dx/ds
+    vert_points = []; %dy/ds
+    for i = 1 : length(s_list)
+        [V_guess, G_guess] = egg_func(s_list(i), x0, y0, theta, egg_params);
+        [topbottomroot, ~] = secant_solver(egg_wrapper2horz, s_list(i), s_list(i)+0.01, 0.001, 100)
+    end
+    
+    [V_single, G_single] = egg_func(topbottomroot,x0,y0,theta,egg_params);
     
     
     
@@ -34,7 +52,7 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     
     
     %as well as the tangent vector at that point
-    [V_single, G_single] = egg_func(s_list(1),x0,y0,theta,egg_params);
+    [V_single, G_single] = egg_func(topbottomroot,x0,y0,theta,egg_params);
     
     
     
