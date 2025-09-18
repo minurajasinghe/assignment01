@@ -34,15 +34,21 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     
     
     %Points where theres a vert or horz tangent
-    horz_points = zeros(2,6); %dx/ds
-    vert_points = []; %dy/ds
-    horz_ses = zeros(1, 6);
     
-    vert_ses = zeros(1, 6);
+    horz_ses = zeros(3, 6);
+    % FORM OF ses:
+    % [s1   s2   s3   s4   s5   s6]
+    % [x1   x2   x3   x4   x5   x6]
+    % [y1   y2   y3   y4   y5   y6]
+    vert_ses = zeros(3, 6);
     for i = 1 : length(s_list)
         %[V_guess, G_guess] = egg_func(s_list(i), x0, y0, theta, egg_params);
+        
+
         [topbottomroot, ~] = secant_solver(egg_wrapper2horz, s_list(i), s_list(i)+0.01, 0.001, 100);
         [leftrightroot, ~] = secant_solver(egg_wrapper2vert, s_list(i), s_list(i)+0.01, 0.001, 100);
+        
+        %fixing odditys
         if abs(topbottomroot) > 2
             topbottomroot = 2; %secant didnt work, went off to infinity
         elseif topbottomroot > 1
@@ -58,8 +64,15 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
             leftrightroot = leftrightroot + 1;
         end
 
-        horz_ses(i) = topbottomroot;
-        vert_ses(i) = leftrightroot;
+        horz_ses(1, i) = topbottomroot;
+        [V_guess_tb, ~] = egg_func(topbottomroot, x0, y0, theta, egg_params);
+        horz_ses(2, i) = V_guess_tb(1);
+        horz_ses(3, i) = V_guess_tb(2);
+
+        vert_ses(1, i) = leftrightroot;
+        [V_guess_lr, ~] = egg_func(leftrightroot, x0, y0, theta, egg_params);
+        vert_ses(2, i) = V_guess_lr(1);
+        vert_ses(3, i) = V_guess_lr(2);
     end
 
     disp(vert_ses)
