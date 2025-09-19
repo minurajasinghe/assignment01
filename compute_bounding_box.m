@@ -16,11 +16,11 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     axis([0,40,0,40])
     
     %plot the origin of the egg frame
-    plot(x0,y0,'ro','markerfacecolor','r');
+    %plot(x0,y0,'ro','markerfacecolor','r');
     %compute the perimeter of the egg
-    [V_list, G_list] = egg_func(linspace(0,1,100),x0,y0,theta,egg_params);
+    %[V_list, G_list] = egg_func(linspace(0,1,100),x0,y0,theta,egg_params);
     %plot the perimeter of the egg
-    plot(V_list(1,:),V_list(2,:),'k');
+    %plot(V_list(1,:),V_list(2,:),'k');
     
     [find_V_list, find_G_list] = egg_func(s_list, x0, y0, theta, egg_params);
 

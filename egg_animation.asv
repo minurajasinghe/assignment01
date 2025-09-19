@@ -1,0 +1,42 @@
+%Short example demonstrating how to create a MATLAB animation
+%In this case, a square moving along an elliptical path
+function egg_animation()
+    t_vals = linspace(0, 40, 100);
+    x_vals = 7.*t_vals + 8;
+    y_vals = -6.*t_vals.^2 + 20.*t_vals + 6;
+    plot(x_vals, t_vals); 
+    
+    
+    hold on
+    %Define the coordinates of the square vertices (in its own frame)
+    egg_params = struct();
+    egg_params.a = 3; egg_params.b = 2; egg_params.c = .15;
+    %plot the perimeter of the eg
+
+    %V_list(1,:) is square coords x
+
+    %set up the plotting axis
+    hold on; 
+    axis([0,80,0,80])
+    %initialize the plot of the square
+    square_plot = plot(0,0,'k');
+    y_ground = 0;
+    x_wall = 40;
+
+    [t_ground,t_wall] = collision_func(@egg_trajectory01, egg_params, y_ground, x_wall)
+    t_stop = min(t_ground, t_wall)
+    %iterate through time
+    for t=0:.001:3.5
+        [x_func, y_func, theta] = egg_trajectory01(t);
+        [V_list, G_list] = egg_func(linspace(0,1,100),x_func,y_func,theta,egg_params);
+        
+        %compute positions of egg vertices (in world frame)
+        x_plot = V_list(1,:) +x_func;
+        y_plot = V_list(2,:)+y_func;
+        %update the coordinates of the square plot
+        set(square_plot,'xdata',x_plot,'ydata',y_plot);
+        %update the actual plotting window
+        
+        drawnow;
+    end
+end
